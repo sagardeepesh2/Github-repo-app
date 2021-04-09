@@ -1,8 +1,7 @@
 import React from "react";
-import Card from 'react-bootstrap/Cards';
+import Card from 'react-bootstrap/Card'
 
-function Card(props){
-    const[repo] = props;
+function RepoCard(props){
 return (
     <div>
         <Card style={{ width: '18rem' }}>
@@ -21,4 +20,4 @@ return (
 );
 }
 
-export default Card;
+export default RepoCard;

@@ -3,12 +3,12 @@ import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './App.css'
-import Card from "./Cards";
+import RepoCard from "./Cards";
 
 function App() {
   const [username,setUsername] = useState("");
   const [loading,setLoading] = useState(false);
-  const [repo,setRepo] = useState([])
+  const [repo,setRepo] = useState([]);
 
 
   let repoUrl = "https://api.github.com/users/" + username+"/repos";
@@ -24,20 +24,21 @@ function App() {
 
   function searchRepos(){
     setLoading(true);
-    fetch(repoUrl,{
-      method:"get",
-    }).then(res=>{
+    fetch(repoUrl)
+    .then(res=>res.json())
+    .then((result) =>{
       setLoading(false);
-      console.log(res.data);
-      setRepo(res.data);
-      console.log(repo);
-    }).then(data => 
-      console.log(data));
+      console.log(result)
+      setRepo(result);
+    });
   }
 
-  function renderRepo(){
+  function renderRepo(repo){
     return(
-    <Card info="repo"/>  
+      <div>
+    <h2>{repo.name}</h2>
+    {/* <RepoCard info="repo"/> */}
+    </div>  
     );
   }
   
@@ -58,7 +59,7 @@ function App() {
   <Button variant="outline-info" onClick={handleSubmit}>{loading ? "Searching..." : "Get Repositories"}</Button>
   </Form>
     <div>
-      {repos.map(renderRepo())}
+      {repo.map(renderRepo)}
     </div>
   </div>
 
