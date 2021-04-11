@@ -2,4 +2,6 @@ Form{
     text-align: center;
     padding: 50px 250px 0 250px;
 }
-
+.btn{
+    margin : 10px;
+}
