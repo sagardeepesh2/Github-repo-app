@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import './App.css'
 import RepoCard from "./Cards";
 import UserInfo from "./UserInfo";
+import { CardDeck } from "react-bootstrap";
 
 function App() {
   const [username,setUsername] = useState("");
@@ -46,6 +47,7 @@ function App() {
       setLoadingRepo(false);
       setRepoOrUser(true);
       setRepo(result);
+      console.log(repo);
     });
   }
 
@@ -60,13 +62,13 @@ function App() {
       setUserDetails(result);
   });
 }
-  function renderRepo(repo){
-    return(
-      <div >
-    <RepoCard info={repo}/>
-    </div>  
-    );
-  }
+  // function renderRepo(repo){
+  //   return(
+  //     <div >
+  //   <RepoCard info={repo}/>
+  //   </div>  
+  //   );
+  // }
 
   const formStyle={
     position:"relative;",
@@ -76,7 +78,8 @@ function App() {
   function showRepoOrUserDetails(){
     if(RepoOrUser){
       return(
-      <div>{repo.map(renderRepo)}</div>);
+      // <div>{repo.map(renderRepo)}</div>);
+      <CardDeck>{repo.map((r)=><RepoCard info={r}/>)}</CardDeck>)
     } else if(RepoOrUser === false) {
       return(<UserInfo info={userDetails} />);
     }
@@ -84,6 +87,7 @@ function App() {
   
   return (
     <div>
+  {/* <Router> */}
   <Form >
   <Form.Group controlId="formBasicEmail">
     <Form.Label>Enter your Github Username</Form.Label>
@@ -92,10 +96,23 @@ function App() {
     value = {username}
  type="text" placeholder="Github Username" />
   </Form.Group>
-  <Button  variant="outline-info" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Button>
-  <Button to="/User" variant="outline-danger" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Button>
-  </Form>
+  {/* <Link to="/repoList"  variant="outline-info" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Link>
+  <Link to="/user" variant="outline-danger" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Link> */}
+  <Button variant="outline-info" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Button>
+  <Button variant="outline-danger" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Button>
+  {/* <Link onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Link>
+  <Link onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Link> */}
+  {/* <Switch>
+    <Route path = "/repoList">
+    <div>{repo.map(renderRepo)}</div>
+    </Route>
+    <Route path="/user">
+    <UserInfo info={userDetails} />
+    </Route>
+  </Switch>
+  </Router> */}
   {showRepoOrUserDetails()}
+  </Form>
   </div>
   );
 }
