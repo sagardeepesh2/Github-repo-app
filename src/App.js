@@ -11,20 +11,18 @@ import Button from 'react-bootstrap/Button';
 import './App.css'
 import RepoCard from "./Cards";
 import UserInfo from "./UserInfo";
-import { CardDeck } from "react-bootstrap";
+// import { CardDeck } from "react-bootstrap";
 
 function App() {
-  const [username,setUsername] = useState("");
-  const [loadingRepo,setLoadingRepo] = useState(false);
-  const [repo,setRepo] = useState([]);
-  const [loadingUser,setLoadingUser] = useState(false);
-  const [userDetails,setUserDetails] = useState([]);
-  //If extracting repo then true else if user then false
-  const [RepoOrUser,setRepoOrUser] = useState(null);
+  const [username, setUsername] = useState("");
+  const [loadingRepo, setLoadingRepo] = useState(false);
+  const [repo, setRepo] = useState([]);
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
 
-  let repoUrl = "https://api.github.com/users/" + username+ "/repos";
+  let repoUrl = "https://api.github.com/users/" + username + "/repos";
   let userUrl = "https://api.github.com/users/" + username;
-  
+
   function handleSubmitRepo(event) {
     event.preventDefault();
     searchRepos();
@@ -39,81 +37,66 @@ function App() {
     setUsername(event.target.value);
   }
 
-  function searchRepos(){
+  function searchRepos() {
     setLoadingRepo(true);
     fetch(repoUrl)
-    .then(res=>res.json())
-    .then((result) =>{
-      setLoadingRepo(false);
-      setRepoOrUser(true);
-      setRepo(result);
-      console.log(repo);
-    });
+      .then(res => res.json())
+      .then((result) => {
+        setRepo(result);
+        // console.log(repo);
+        setLoadingRepo(false);
+      });
   }
 
-  
-  function fetchUserDetails(){
+
+  function fetchUserDetails() {
     setLoadingUser(true);
     fetch(userUrl)
-    .then(res=>res.json())
-    .then((result) =>{
-      setLoadingUser(false);
-      setRepoOrUser(false);
-      setUserDetails(result);
-  });
-}
-  // function renderRepo(repo){
-  //   return(
-  //     <div >
-  //   <RepoCard info={repo}/>
-  //   </div>  
-  //   );
-  // }
+      .then(res => res.json())
+      .then((result) => {
+        setLoadingUser(false);
+        // console.log(userDetails);
+        setUserDetails(result);
+      });
+  }
 
-  const formStyle={
-    position:"relative;",
-    right:"50px;"
+  const formStyle = {
+    position: "relative;",
+    right: "50px;"
   };
 
-  function showRepoOrUserDetails(){
-    if(RepoOrUser){
-      return(
-      // <div>{repo.map(renderRepo)}</div>);
-      <CardDeck>{repo.map((r)=><RepoCard info={r}/>)}</CardDeck>)
-    } else if(RepoOrUser === false) {
-      return(<UserInfo info={userDetails} />);
-    }
-  }
-  
+
   return (
     <div>
-  {/* <Router> */}
-  <Form >
-  <Form.Group controlId="formBasicEmail">
-    <Form.Label>Enter your Github Username</Form.Label>
-    <Form.Control style={formStyle}
-    onChange={handleClick}
-    value = {username}
- type="text" placeholder="Github Username" />
-  </Form.Group>
-  {/* <Link to="/repoList"  variant="outline-info" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Link>
-  <Link to="/user" variant="outline-danger" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Link> */}
-  <Button variant="outline-info" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Button>
-  <Button variant="outline-danger" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Button>
-  {/* <Link onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Link>
-  <Link onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Link> */}
-  {/* <Switch>
-    <Route path = "/repoList">
-    <div>{repo.map(renderRepo)}</div>
-    </Route>
-    <Route path="/user">
-    <UserInfo info={userDetails} />
-    </Route>
-  </Switch>
-  </Router> */}
-  {showRepoOrUserDetails()}
-  </Form>
-  </div>
+      <Form >
+        <Router>
+        <div>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Enter your Github Username</Form.Label>
+            <Form.Control style={formStyle}
+              onChange={handleClick}
+              value={username}
+              type="text" placeholder="Github Username" />
+          </Form.Group>
+          <Link to="/repo">
+          <Button variant="outline-warning" onClick={handleSubmitRepo}>{loadingRepo ? "Searching Repos..." : "Get Repositories"}</Button>
+          </Link>
+          <Link to="/user">
+          <Button variant="outline-info" onClick={handleSubmitUser}>{loadingUser ? "Searching User Info..." : "Get User Info"}</Button>
+          </Link> 
+          <Switch>
+            <Route exact path ="/">
+            <img className="Homepage" src="https://cdn.pixabay.com/photo/2020/06/12/14/07/code-5290465_1280.jpg"  alt="Homepage"/> 
+            </Route>
+            <Route path="/repo" component={()=><RepoCard info={repo} />}>
+            </Route>
+            <Route path="/user" component = {()=><UserInfo info={userDetails} />}>
+            </Route>
+          </Switch>
+          </div>
+        </Router>
+      </Form>
+    </div>
   );
 }
 

@@ -6,7 +6,7 @@ function UserInfo(props){
         <Jumbotron >
     <img style={{height:"150px",width:"150px",borderRadius:"10px 100px / 120px"}}
      src={props.info.avatar_url}
-     alt="User image"></img>
+     alt="User"></img>
   <h1>{props.info.name}</h1>
   <h2>
     {props.info.bio}

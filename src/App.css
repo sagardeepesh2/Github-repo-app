@@ -5,3 +5,12 @@ Form{
 .btn{
     margin : 10px;
 }
+
+.Homepage{
+width: 100%;
+height: 65%;
+padding: 10px;
+position: absolute;
+top:35%;
+left: 0%;
+}
